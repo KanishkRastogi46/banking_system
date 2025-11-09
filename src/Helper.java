@@ -58,7 +58,7 @@ public class Helper {
         return ifsc;
     }
 
-    public static boolean checkMinBalance(BankAccount account, double minBalance) {
-        return account.getAccBalance() >= minBalance;
+    public static boolean checkMinBalance(BankAccount account, double minBalance, double withdrawAmount) {
+        return (account.getAccBalance() - withdrawAmount) >= minBalance;
     }
 }

@@ -78,16 +78,44 @@ public class App {
                     break;
                 }
                 case 2: {
+                    System.out.println("Deposit selected!!");
+                    try {
+                        System.out.println("Please enter your account number: ");
+                        String accNumStr = myApp.buff.readLine();
+                        long accNumber = Long.parseLong(accNumStr);
 
+                        System.out.println("Please enter the amount to be deposited: ");
+                        String amountStr = myApp.buff.readLine();
+                        double amount = Double.parseDouble(amountStr);
+
+                        myApp.mOpeartions.depositMoney(amount, accNumber);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                    break;
                 }
                 case 3: {
+                    System.out.println("Withdraw selected!!");
+                    try {
+                        System.out.println("Please enter your account number: ");
+                        String accNumStr = myApp.buff.readLine();
+                        long accNumber = Long.parseLong(accNumStr);
 
+                        System.out.println("Please enter the amount to be withdrawn: ");
+                        String amountStr = myApp.buff.readLine();
+                        double amount = Double.parseDouble(amountStr);
+
+                        myApp.mOpeartions.withdrawMoney(amount, accNumber);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                    break;
                 }
                 case 4: {
-
+                    break;
                 }
                 case 5: {
-
+                    break;
                 }
                 default: System.out.println("No operation selected!!");
             }

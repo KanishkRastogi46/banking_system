@@ -5,7 +5,8 @@ public class BankBranches extends Bank {
     private String ifsc;
     private Bank bank;
     private BranchManager branchManager;
-    private ArrayList<Customer> customers;
+    private static ArrayList<Customer> customers;
+    private static ArrayList<BankAccount> accounts;
     private Atm atm;
 
     public BankBranches(String name) {
@@ -45,14 +46,36 @@ public class BankBranches extends Bank {
         return customers;
     }
 
-    public void setCustomers(Customer customer) {
-        if (this.customers == null) {
-            this.customers = new ArrayList<>();
+    public static void setCustomers(Customer customer) {
+        if (customers == null) {
+            customers = new ArrayList<>();
         }
-        this.customers.add(customer);
+        customers.add(customer);
     }
 
     public Atm getAtm() {
         return atm;
+    }
+
+    public ArrayList<BankAccount> getAccounts() {
+        return accounts;
+    }
+
+    public static BankAccount getAccountByAccNumber(long accNumber) {
+        if (accounts != null) {
+            for (BankAccount account : accounts) {
+                if (account.getAccNumber() == accNumber) {
+                    return account;
+                }
+            }
+        }
+        return null;
+    }
+
+    public void setAccounts(BankAccount account) {
+        if (accounts == null) {
+            accounts = new ArrayList<>();
+        }
+        accounts.add(account);
     }
 }

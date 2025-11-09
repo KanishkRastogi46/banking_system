@@ -1,6 +1,5 @@
 
 import java.io.BufferedReader;
-import java.io.IOException;
 
 public class BankOperations {
     BufferedReader buff;
@@ -53,7 +52,8 @@ public class BankOperations {
             newCustomer.setCustName(custName);
             newCustomer.setCustPhone(phoneNumber);
             newAccount.setAccHolder(newCustomer);
-            bankBranch.setCustomers(newCustomer);
+            BankBranches.setCustomers(newCustomer);
+            bankBranch.setAccounts(newAccount);
 
             System.out.println("Congratulations!! " + custName + " Your account has been created successfully in " + bankName + " bank and your account number is " + accNumber);
         } catch (Exception e) {
@@ -61,13 +61,31 @@ public class BankOperations {
         }
     }
 
-    public void depositMoney(double amount, BankAccount account) {
-        account.setAccBalance(account.getAccBalance() + amount);
+    public void depositMoney(double amount, long accNumber) {
+        BankAccount account = BankBranches.getAccountByAccNumber(accNumber);
+        if (account != null) {
+            double currentBalance = account.getAccBalance();
+            account.setAccBalance(currentBalance + amount);
+            System.out.println("Amount deposited successfully!! New balance is: " + account.getAccBalance());
+        } else {
+            System.out.println("Account not found with account number: " + accNumber);
+        }
     }
 
-    public void withdrawMoney(double amount, BankAccount account) {
-        if (Helper.checkMinBalance(account, 5000.00)) account.setAccBalance(account.getAccBalance() - amount);
-        else System.out.println("Insufficient balance to withdraw the amount requested!!");
+    public void withdrawMoney(double amount, long accNumber) {
+        BankAccount account = BankBranches.getAccountByAccNumber(accNumber);
+        if (account != null) {
+            boolean isMinBalanceMaintained = Helper.checkMinBalance(account, 5000.00, amount);
+            if (isMinBalanceMaintained) {
+                double currentBalance = account.getAccBalance();
+                account.setAccBalance(currentBalance - amount);
+                System.out.println("Amount withdrawn successfully!! New balance is: " + account.getAccBalance());
+            } else {
+                System.out.println("Insufficient balance to withdraw the amount requested!!");
+            }
+        } else {
+            System.out.println("Account not found with account number: " + accNumber);
+        }
     }
 
     public void openFD() {
