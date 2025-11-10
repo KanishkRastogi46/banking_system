@@ -1,5 +1,5 @@
 public class Customer {
-    private String custID;
+    private int custID;
     private String custName;
     private String custPhone;
 
@@ -9,11 +9,11 @@ public class Customer {
         this.custPhone = phone;
     }
 
-    public String getCustID() {
+    public int getCustID() {
         return custID;
     }
 
-    public void setCustID(String custID) {
+    public void setCustID(int custID) {
         this.custID = custID;
     }
 

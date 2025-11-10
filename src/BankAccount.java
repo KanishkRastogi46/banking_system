@@ -43,4 +43,20 @@ public class BankAccount {
     public String getIfscCode(BankBranches branch) {
         return branch.getIfsc();
     }
+
+    public Bank getBank() {
+        return bank;
+    }
+
+    public void setBank(Bank bank) {
+        this.bank = bank;
+    }
+
+    public BankBranches getBranch() {
+        return branch;
+    }
+
+    public void setBranch(BankBranches branch) {
+        this.branch = branch;
+    }
 }

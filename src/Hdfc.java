@@ -1,14 +1,20 @@
-
 import java.io.BufferedReader;
+import java.util.ArrayList;
 
-public class BankOperations {
+public class Hdfc extends Bank {
     BufferedReader buff;
+    private static final ArrayList<BankBranches> branches = new ArrayList<>();
 
-    public BankOperations(BufferedReader buff) {
+    public Hdfc() {
+        super("HDFC");
+    }
+    public Hdfc(BufferedReader buff) {
+        super("HDFC");
         this.buff = buff;
     }
 
-    public void createAccount(String bankName, String branchName) {
+    @Override
+    public void openAccount(String branchName) {
         long aadharNumber;
         String panNumber, phoneNumber;
 
@@ -36,31 +42,29 @@ public class BankOperations {
                 return;
             }
 
-            System.out.println("Verification successful!! Creating your account now...");
-            Bank bank = new Bank(bankName);
-            BankBranches bankBranch = new BankBranches(bankName);
+            Bank bank = new Hdfc();
+            StringBuilder ifsc = Helper.generateIfsc("HDFC");
+            BankBranches bankBranch = new BankBranches(bank, branchName, ifsc.toString());
             bank.addBranch(bankBranch);
-            bankBranch.setIfsc(Helper.generateIfsc(bankName).toString());
 
             Customer newCustomer = new Customer();
             BankAccount newAccount = new BankAccount();
-
-            // Generate account number
-            long accNumber = Helper.generateAccNumber();
-            newAccount.setAccNumber(accNumber);
-            newCustomer.setCustID(Integer.parseInt(Helper.generateCustomerID(bankName).toString()));
+            newCustomer.setCustID(Integer.parseInt(Helper.generateCustomerID(branchName).toString()));
             newCustomer.setCustName(custName);
             newCustomer.setCustPhone(phoneNumber);
+            newAccount.setAccNumber(Helper.generateAccNumber());
             newAccount.setAccHolder(newCustomer);
             BankBranches.setCustomers(newCustomer);
-            bankBranch.setAccounts(newAccount);
+            BankBranches.setAccounts(newAccount);
 
-            System.out.println("Congratulations!! " + custName + " Your account has been created successfully in " + bankName + " bank and your account number is " + accNumber);
-        } catch (Exception e) {
+            System.out.println("Congratulations!! " + custName + " Your account has been created successfully in HDFC bank and your account number is " + newAccount.getAccNumber());
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    @Override
     public void depositMoney(double amount, long accNumber) {
         BankAccount account = BankBranches.getAccountByAccNumber(accNumber);
         if (account != null) {
@@ -72,6 +76,7 @@ public class BankOperations {
         }
     }
 
+    @Override
     public void withdrawMoney(double amount, long accNumber) {
         BankAccount account = BankBranches.getAccountByAccNumber(accNumber);
         if (account != null) {
@@ -88,11 +93,19 @@ public class BankOperations {
         }
     }
 
-    public void openFD() {
-
+    @Override
+    public void openFD(long accNumber) {
+        
     }
 
+    @Override
     public void applyLoan() {
-
+        
     }
+
+    @Override
+    public void addBranch(BankBranches branch) {
+        Hdfc.branches.add(branch);
+    }
+
 }

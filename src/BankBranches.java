@@ -1,19 +1,17 @@
-import java.util.ArrayList;
+import java.util.TreeMap;
 
-public class BankBranches extends Bank {
+public class BankBranches {
     private String branchName;
     private String ifsc;
     private Bank bank;
     private BranchManager branchManager;
-    private static ArrayList<Customer> customers;
-    private static ArrayList<BankAccount> accounts;
+    private static final TreeMap<Integer, Customer> customers = new TreeMap<>();
+    private static final TreeMap<Long, BankAccount> accounts = new TreeMap<>();
     private Atm atm;
 
-    public BankBranches(String name) {
-        super(name);
-    }
-    public BankBranches(String bankName, String branchName, String code) {
-        super(bankName);
+    public BankBranches(String name) {}
+    public BankBranches(Bank bank, String branchName, String code) {
+        this.bank = bank;
         this.branchName = branchName;
         this.ifsc = code;
     }
@@ -42,40 +40,34 @@ public class BankBranches extends Bank {
         return branchManager;
     }
 
-    public ArrayList<Customer> getCustomers() {
+    public static TreeMap<Integer, Customer> getCustomers() {
         return customers;
     }
 
     public static void setCustomers(Customer customer) {
-        if (customers == null) {
-            customers = new ArrayList<>();
-        }
-        customers.add(customer);
+        customers.put(customer.getCustID(), customer);
     }
 
     public Atm getAtm() {
         return atm;
     }
 
-    public ArrayList<BankAccount> getAccounts() {
+    public static TreeMap<Long, BankAccount> getAccounts() {
         return accounts;
     }
 
     public static BankAccount getAccountByAccNumber(long accNumber) {
         if (accounts != null) {
-            for (BankAccount account : accounts) {
-                if (account.getAccNumber() == accNumber) {
-                    return account;
+            for (long account : accounts.keySet()) {
+                if (account == accNumber) {
+                    return accounts.get(account);
                 }
             }
         }
         return null;
     }
 
-    public void setAccounts(BankAccount account) {
-        if (accounts == null) {
-            accounts = new ArrayList<>();
-        }
-        accounts.add(account);
+    public static void setAccounts(BankAccount account) {
+        accounts.put(account.getAccNumber(), account);
     }
 }

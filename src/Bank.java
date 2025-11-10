@@ -1,7 +1,7 @@
 
 import java.util.ArrayList;
 
-public class Bank {
+public abstract class Bank implements RBI {
     private String bankName;
     private static final ArrayList<BankBranches> branches = new ArrayList<>();
 
