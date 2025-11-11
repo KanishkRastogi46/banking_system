@@ -7,12 +7,10 @@ public class App {
     BufferedReader buff;
     InputStreamReader isr;
     String choice, operations, selectedBank;
-    BankOperations mOpeartions;
 
     App() {
         this.isr = new InputStreamReader(System.in);
         this.buff = new BufferedReader(isr);
-        this.mOpeartions = new BankOperations(buff);
     }
     public static void main(String[] args) {
         App myApp = new App();
@@ -27,32 +25,27 @@ public class App {
             }
 
             switch (Integer.parseInt(myApp.choice)) {
-                case 1: {
+                case 1 ->  {
                     System.out.println("ICICI Bank selected!!"); 
                     myApp.selectedBank = "ICICI";
-                    break;
                 }
-                case 2: {
+                case 2 ->  {
                     System.out.println("HDFC Bank selected!!"); 
                     myApp.selectedBank = "HDFC";
-                    break;
                 }
-                case 3: {
+                case 3 ->  {
                     System.out.println("HSBC Bank selected!!"); 
                     myApp.selectedBank = "HSBC";
-                    break;
                 }
-                case 4: {
+                case 4 ->  {
                     System.out.println("Axis Bank selected!!"); 
                     myApp.selectedBank = "AXIS";
-                    break;
                 }
-                case 5: {
+                case 5 ->  {
                     System.out.println("SBI Bank selected!!"); 
                     myApp.selectedBank = "SBI";
-                    break;
                 }
-                default: {
+                default -> {
                     System.out.println("No bank selected!!");
                     return;
                 }
@@ -65,19 +58,13 @@ public class App {
                 e.printStackTrace();
             }
 
+            RBI bank = Bank.createBankObj(myApp.selectedBank, myApp.buff);
             switch (Integer.parseInt(myApp.operations)) {
-                case 1: {
+                case 1 ->  {
                     System.out.println("Open Account selected!!");
-                    System.out.println("Please enter the branch name: ");
-                    try {
-                        String branchName = myApp.buff.readLine();
-                        myApp.mOpeartions.createAccount(myApp.selectedBank, branchName);
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                    break;
+                    bank.openAccount(myApp.selectedBank);
                 }
-                case 2: {
+                case 2 ->  {
                     System.out.println("Deposit selected!!");
                     try {
                         System.out.println("Please enter your account number: ");
@@ -88,13 +75,12 @@ public class App {
                         String amountStr = myApp.buff.readLine();
                         double amount = Double.parseDouble(amountStr);
 
-                        myApp.mOpeartions.depositMoney(amount, accNumber);
+                        bank.depositMoney(amount, accNumber);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
-                    break;
                 }
-                case 3: {
+                case 3 ->  {
                     System.out.println("Withdraw selected!!");
                     try {
                         System.out.println("Please enter your account number: ");
@@ -105,19 +91,28 @@ public class App {
                         String amountStr = myApp.buff.readLine();
                         double amount = Double.parseDouble(amountStr);
 
-                        myApp.mOpeartions.withdrawMoney(amount, accNumber);
+                        bank.withdrawMoney(amount, accNumber);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
-                    break;
                 }
-                case 4: {
-                    break;
+                case 4 ->  {
+                    System.out.println("Open FD selected!!");
+                    try {
+                        System.out.println("Please enter your account number: ");
+                        String accNumStr = myApp.buff.readLine();
+                        long accNumber = Long.parseLong(accNumStr);
+
+                        bank.openFD(accNumber);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
                 }
-                case 5: {
-                    break;
+                case 5 ->  {
+                    System.out.println("Apply Loan selected!!");
+                    bank.applyLoan();
                 }
-                default: System.out.println("No operation selected!!");
+                default -> System.out.println("No operation selected!!");
             }
             System.out.println("Do you want to stop? (yes/no)");
             try {

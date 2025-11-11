@@ -1,19 +1,22 @@
+
+import java.util.Date;
+
 public class BankAccount {
     private long accNumber;
     private double accBalance;
     private Customer accHolder;
-    private Bank bank;
-    private BankBranches branch;
+    private String bankName;
+    private Date accOpenDate;
 
     public BankAccount() {
         this.accBalance = 5000.00;
     }
-    public BankAccount(long accNumber, double accBalance, Customer accHolder, Bank bank, BankBranches branch) {
+    public BankAccount(long accNumber, double accBalance, Customer accHolder, String bankName) {
         this.accNumber = accNumber;
         this.accBalance = accBalance;
         this.accHolder = accHolder;
-        this.bank = bank;
-        this.branch = branch;
+        this.bankName = bankName;
+        this.accOpenDate = new Date();
     }
 
     public long getAccNumber() {
@@ -40,23 +43,19 @@ public class BankAccount {
         this.accHolder = accHolder;
     }
 
-    public String getIfscCode(BankBranches branch) {
-        return branch.getIfsc();
+    public Date getAccOpenDate() {
+        return accOpenDate;
     }
 
-    public Bank getBank() {
-        return bank;
+    public void setAccOpenDate(Date accOpenDate) {
+        this.accOpenDate = accOpenDate;
     }
 
-    public void setBank(Bank bank) {
-        this.bank = bank;
+    public String getBankName() {
+        return bankName;
     }
 
-    public BankBranches getBranch() {
-        return branch;
-    }
-
-    public void setBranch(BankBranches branch) {
-        this.branch = branch;
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
     }
 }

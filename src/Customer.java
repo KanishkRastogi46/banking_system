@@ -2,6 +2,7 @@ public class Customer {
     private int custID;
     private String custName;
     private String custPhone;
+    private BankAccount custAccount;
 
     public Customer() {}
     public Customer(String name, String phone) {

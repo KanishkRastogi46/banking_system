@@ -1,21 +1,23 @@
 
 import java.io.BufferedReader;
+import java.io.IOException;
 
-public class BankOperations {
+public class BankOperations implements RBI {
     BufferedReader buff;
 
     public BankOperations(BufferedReader buff) {
         this.buff = buff;
     }
 
-    public void createAccount(String bankName, String branchName) {
-        long aadharNumber;
-        String panNumber, phoneNumber;
-
-        System.out.println("Following deatils are required to create a new bank account:");
-        System.out.println("Aadhar card number, PAN card number and phone number");
-
+    @Override
+    public void openAccount(String bankName) {
         try {
+            long aadharNumber;
+            String panNumber, phoneNumber;
+
+            System.out.println("Following deatils are required to create a new bank account:");
+            System.out.println("1. Aadhar card number,\n2. PAN card number,\n3. phone number\n");
+
             System.out.println("Please enter your name: ");
             String custName = this.buff.readLine();
 
@@ -37,10 +39,6 @@ public class BankOperations {
             }
 
             System.out.println("Verification successful!! Creating your account now...");
-            Bank bank = new Bank(bankName);
-            BankBranches bankBranch = new BankBranches(bankName);
-            bank.addBranch(bankBranch);
-            bankBranch.setIfsc(Helper.generateIfsc(bankName).toString());
 
             Customer newCustomer = new Customer();
             BankAccount newAccount = new BankAccount();
@@ -48,21 +46,26 @@ public class BankOperations {
             // Generate account number
             long accNumber = Helper.generateAccNumber();
             newAccount.setAccNumber(accNumber);
-            newCustomer.setCustID(Integer.parseInt(Helper.generateCustomerID(bankName).toString()));
+            newCustomer.setCustID(Integer.parseInt(Helper.generateCustomerID().toString()));
             newCustomer.setCustName(custName);
             newCustomer.setCustPhone(phoneNumber);
             newAccount.setAccHolder(newCustomer);
-            BankBranches.setCustomers(newCustomer);
-            bankBranch.setAccounts(newAccount);
+
+            Bank.addAccountByBank(bankName, newAccount);
+            Bank.addCustomerByBank(bankName, newCustomer);
+            Bank.mapAccNumToCustID(accNumber, newCustomer.getCustID());
 
             System.out.println("Congratulations!! " + custName + " Your account has been created successfully in " + bankName + " bank and your account number is " + accNumber);
+        } catch(IOException e) {
+            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    @Override
     public void depositMoney(double amount, long accNumber) {
-        BankAccount account = BankBranches.getAccountByAccNumber(accNumber);
+        BankAccount account = Bank.getAccountInfo(accNumber);
         if (account != null) {
             double currentBalance = account.getAccBalance();
             account.setAccBalance(currentBalance + amount);
@@ -72,8 +75,9 @@ public class BankOperations {
         }
     }
 
+    @Override
     public void withdrawMoney(double amount, long accNumber) {
-        BankAccount account = BankBranches.getAccountByAccNumber(accNumber);
+        BankAccount account = Bank.getAccountInfo(accNumber);
         if (account != null) {
             boolean isMinBalanceMaintained = Helper.checkMinBalance(account, 5000.00, amount);
             if (isMinBalanceMaintained) {
@@ -88,10 +92,12 @@ public class BankOperations {
         }
     }
 
-    public void openFD() {
-
+    @Override
+    public void openFD(long accNum) {
+    
     }
 
+    @Override
     public void applyLoan() {
 
     }

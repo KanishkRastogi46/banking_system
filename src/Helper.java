@@ -34,7 +34,7 @@ public class Helper {
         return true;
     }
 
-    public static StringBuilder generateCustomerID(String bankName) {
+    public static StringBuilder generateCustomerID() {
         StringBuilder custID = new StringBuilder();
         Random rand = new Random();
         for (int i = 0; i < 8; i++) {
@@ -42,20 +42,6 @@ public class Helper {
             custID.append(digit);
         }
         return custID;
-    }
-
-    public static StringBuilder generateIfsc(String bankName) {
-        int endIndex = bankName.length() < 4 ? bankName.length() : 4;
-        String bankInitial4Letters = bankName.substring(0, endIndex).toUpperCase();
-        StringBuilder ifsc = new StringBuilder();
-        Random rand = new Random();
-        ifsc.append(bankInitial4Letters);
-        ifsc.append("0");
-        for (int i=0; i<6; i++) {
-            int digit = rand.nextInt(10);
-            ifsc.append(digit);
-        }
-        return ifsc;
     }
 
     public static boolean checkMinBalance(BankAccount account, double minBalance, double withdrawAmount) {
