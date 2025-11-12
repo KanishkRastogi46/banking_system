@@ -47,4 +47,8 @@ public class Helper {
     public static boolean checkMinBalance(BankAccount account, double minBalance, double withdrawAmount) {
         return (account.getAccBalance() - withdrawAmount) >= minBalance;
     }
+
+    public static double calculateFDMaturityAmount(double principal, double rateOfInterest, int durationYears) {
+        return principal * Math.pow((1 + rateOfInterest / 100), durationYears);
+    }
 }

@@ -37,9 +37,16 @@ public class Bank {
         return accounts.get(bankName);
     }
 
-    public static BankAccount getAccountInfo(long accNum) {
-        if (accNumberMap.isEmpty() || !accNumberMap.containsKey(accNum)) return null;
-        return accNumberMap.get(accNum);
+    public static BankAccount getAccountInfo(String bankName, long accNum) {
+        if (accounts.isEmpty() || !accounts.containsKey(bankName)) return null;
+        else {
+            for (BankAccount account: accounts.get(bankName)) {
+                if (account.getAccNumber() == accNum) {
+                    return account;
+                }
+            }
+        }
+        return null;
     }
 
     public static void addAccountByBank(String bankName, BankAccount account) {
@@ -58,9 +65,14 @@ public class Bank {
         return customers.get(bankName);
     }
 
-    public static Customer getCustomerInfo(int custID) {
+    public static Customer getCustomerInfo(String bankName, int custID) {
         if (custIDMap.isEmpty() || !custIDMap.containsKey(custID)) return null;
-        return custIDMap.get(custID);
+        else {
+            for (Customer customer: customers.get(bankName)) {
+                if (customer.getCustID() == custID) return customer;
+            }
+        }
+        return null;
     }
 
     public static int getNumOfCustomers(String bankName) {
@@ -77,12 +89,6 @@ public class Bank {
             customers.put(bankName, newCustomerList);
         }
         custIDMap.put(customer.getCustID(), customer);
-    }
-
-    public static Customer getCustomerByAccNum(long accNum) {
-        if (customerAccountMap.isEmpty() || !customerAccountMap.containsKey(accNum)) return null;
-        int custID = customerAccountMap.get(accNum);
-        return getCustomerInfo(custID);
     }
 
     public static void mapAccNumToCustID(long accNum, int custID) {

@@ -55,6 +55,9 @@ public class BankOperations implements RBI {
             Bank.addCustomerByBank(bankName, newCustomer);
             Bank.mapAccNumToCustID(accNumber, newCustomer.getCustID());
 
+            int numOfCustomers = Bank.getNumOfCustomers(bankName);
+            System.out.println("Total number of customers in " + bankName + " bank are: " + numOfCustomers);
+
             System.out.println("Congratulations!! " + custName + " Your account has been created successfully in " + bankName + " bank and your account number is " + accNumber);
         } catch(IOException e) {
             e.printStackTrace();
@@ -64,8 +67,8 @@ public class BankOperations implements RBI {
     }
 
     @Override
-    public void depositMoney(double amount, long accNumber) {
-        BankAccount account = Bank.getAccountInfo(accNumber);
+    public void depositMoney(double amount, long accNumber, String bankName) {
+        BankAccount account = Bank.getAccountInfo(bankName, accNumber);
         if (account != null) {
             double currentBalance = account.getAccBalance();
             account.setAccBalance(currentBalance + amount);
@@ -76,8 +79,8 @@ public class BankOperations implements RBI {
     }
 
     @Override
-    public void withdrawMoney(double amount, long accNumber) {
-        BankAccount account = Bank.getAccountInfo(accNumber);
+    public void withdrawMoney(double amount, long accNumber, String bankName) {
+        BankAccount account = Bank.getAccountInfo(bankName, accNumber);
         if (account != null) {
             boolean isMinBalanceMaintained = Helper.checkMinBalance(account, 5000.00, amount);
             if (isMinBalanceMaintained) {
@@ -93,12 +96,54 @@ public class BankOperations implements RBI {
     }
 
     @Override
-    public void openFD(long accNum) {
-    
+    public void openFD(long accNum, String bankName) {
+        try {
+            System.out.println("Opening FD for account number: " + accNum + " in bank: " + bankName);
+            System.out.println("Please enter the amount to be deposited in FD: ");
+            double amount = Double.parseDouble(this.buff.readLine());
+            double interestRate = RBI.FD_INTEREST_RATE;
+            int durationYears = RBI.FD_DURATION_YEARS;
+            double maturityAmount;
+
+            if (bankName.toLowerCase().equals("icici")) {
+                interestRate = Icici.fdInterestRate;
+                durationYears = Icici.fdDurationYears;
+                maturityAmount = Helper.calculateFDMaturityAmount(amount, interestRate, durationYears);
+            } else if (bankName.toLowerCase().equals("hdfc")) {
+                interestRate = Hdfc.fdInterestRate;
+                durationYears = Hdfc.fdDurationYears;
+                maturityAmount = Helper.calculateFDMaturityAmount(amount, interestRate, durationYears);
+            } else if (bankName.toLowerCase().equals("hsbc")) {
+                interestRate = Hsbc.fdInterestRate;
+                durationYears = Hsbc.fdDurationYears;
+                maturityAmount = Helper.calculateFDMaturityAmount(amount, interestRate, durationYears);
+            } else if (bankName.toLowerCase().equals("axis")) {
+                interestRate = Axis.fdInterestRate;
+                durationYears = Axis.fdDurationYears;
+                maturityAmount = Helper.calculateFDMaturityAmount(amount, interestRate, durationYears);
+            } else if (bankName.toLowerCase().equals("sbi")) {
+                interestRate = Sbi.fdInterestRate;
+                durationYears = Sbi.fdDurationYears;
+                maturityAmount = Helper.calculateFDMaturityAmount(amount, interestRate, durationYears);
+            } else {
+                maturityAmount = Helper.calculateFDMaturityAmount(amount, interestRate, durationYears);
+            }
+
+            System.out.println("FD created successfully!!");
+            System.out.println("Principal Amount: " + amount);
+            System.out.println("Interest Rate: " + interestRate + "%");
+            System.out.println("Duration (years): " + durationYears);
+            System.out.println("Maturity Amount: " + maturityAmount);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void applyLoan() {
-
+        System.out.println("Loan application process initiated...");
+        System.out.println("This feature is under development. Please check back later.");
     }
 }

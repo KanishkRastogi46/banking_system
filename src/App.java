@@ -75,7 +75,7 @@ public class App {
                         String amountStr = myApp.buff.readLine();
                         double amount = Double.parseDouble(amountStr);
 
-                        bank.depositMoney(amount, accNumber);
+                        bank.depositMoney(amount, accNumber, myApp.selectedBank);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
@@ -91,7 +91,7 @@ public class App {
                         String amountStr = myApp.buff.readLine();
                         double amount = Double.parseDouble(amountStr);
 
-                        bank.withdrawMoney(amount, accNumber);
+                        bank.withdrawMoney(amount, accNumber, myApp.selectedBank);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
@@ -103,7 +103,7 @@ public class App {
                         String accNumStr = myApp.buff.readLine();
                         long accNumber = Long.parseLong(accNumStr);
 
-                        bank.openFD(accNumber);
+                        bank.openFD(accNumber, myApp.selectedBank);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
