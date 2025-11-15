@@ -2,15 +2,20 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.Connection;
 
 public class App {
     BufferedReader buff;
     InputStreamReader isr;
     String choice, operations, selectedBank;
+    Connection conn;
 
     App() {
         this.isr = new InputStreamReader(System.in);
         this.buff = new BufferedReader(isr);
+
+        // Connect to Database
+        this.conn = DatabaseConnection.connectTODatbase();
     }
     public static void main(String[] args) {
         App myApp = new App();
